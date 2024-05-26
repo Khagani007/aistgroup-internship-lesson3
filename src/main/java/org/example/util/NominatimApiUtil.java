@@ -60,9 +60,8 @@ public class NominatimApiUtil {
 
             HttpGet httpGet = new HttpGet(uri);
             CloseableHttpClient httpClient = HttpClients.createDefault();
-            CloseableHttpResponse response = httpClient.execute(httpGet);
 
-            try {
+            try (CloseableHttpResponse response = httpClient.execute(httpGet)) {
                 HttpEntity entity = response.getEntity();
                 String responseBody = EntityUtils.toString(entity);
 
@@ -74,8 +73,6 @@ public class NominatimApiUtil {
                 result.setLongitude(longitude);
 
                 return result;
-            } finally {
-                response.close();
             }
         } catch (URISyntaxException | IOException | ParseException e) {
             e.printStackTrace();
